@@ -1,0 +1,15 @@
+---
+- name: Create root Samba directories
+  file: path={{ item }} state=directory owner=root group=root mode=0751
+  with_items: [ '{{ samba_path }}', '{{ samba_homes_path }}', '{{ samba_shares_path }}' ]
+
+- name: Setup samba-homedir.sh script
+  template: src=samba-homedir.sh.j2
+            dest=/usr/local/sbin/samba-homedir.sh
+            owner=root group=root mode=0755
+
+- name: Configure Samba server
+  template: src=smb.conf.j2
+            dest=/etc/samba/smb.conf
+            owner=root group=root mode=0644
+  notify: Reload samba

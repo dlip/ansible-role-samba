@@ -1,0 +1,5 @@
+---
+
+- name: Install Samba packages
+  apt: pkg={{ item }} state=latest install_recommends=no
+  with_items: [ 'samba', 'samba-common', 'samba-common-bin' ]
